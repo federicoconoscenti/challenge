@@ -9,7 +9,7 @@ phases:
       - git clone https://github.com/federicoconoscenti/challenge.git
       - tflint challenge/terraform-provision-eks-cluster/ > /tmp/terraform_errors.txt
       - |
-        if [ $? -ne 0  ] && [ $? -ne 2 ]; then
+        if [ $? -ne 0  ]; then
           echo "Terraform linting errors:"
           cat /tmp/terraform_errors.txt
           echo "Failed: Linting returned a non-zero exit code"
