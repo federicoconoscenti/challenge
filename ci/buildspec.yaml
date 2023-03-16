@@ -1,0 +1,20 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - curl https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+      - tflint --version
+  build:
+    commands:
+      - git clone https://github.com/federicoconoscenti/challenge.git
+      - tflint challenge/terraform-provision-eks-cluster/ > /tmp/terraform_errors.txt
+      - |
+        if [ $? -ne 0  ] && [ $? -ne 2 ]; then
+          echo "Terraform linting errors:"
+          cat /tmp/terraform_errors.txt
+          echo "Failed: Linting returned a non-zero exit code"
+          exit 1
+        fi
+artifacts:
+  files:
+    - /tmp/terraform_errors.txt
